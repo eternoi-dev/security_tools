@@ -1,0 +1,28 @@
+# Python一時ファイル
+__pycache__/
+*.py[cod]
+
+# 仮想環境
+venv/
+.venv/
+env/
+
+# 環境変数
+.env
+.streamlit/secrets.toml
+
+# データベース・ログ
+*.db
+*.sqlite3
+*.log
+
+# テスト関連
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS・エディタ設定
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
