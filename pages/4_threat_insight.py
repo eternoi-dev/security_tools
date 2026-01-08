@@ -140,7 +140,7 @@ def send_daily_report(trend_text, detail_items):
     except:
         return False
 
-st.title("📰 Threat Trend Insight")
+st.title("📰 Threat Trend Insight", anchor=False)
 st.markdown("ニュースタイトルからキーワードを自動抽出し、トレンド分析と重要ニュースの選定を行います。")
 
 # 検索フィルター
@@ -189,7 +189,7 @@ if "news_data" in st.session_state and st.session_state["news_data"]:
         st.divider()
 
         # 2. トレンドグラフ
-        st.subheader("📈 トレンド分析 (Top 10)")
+        st.subheader("📈 トレンド分析 (Top 10)", anchor=False)
         if top_trends:
             df_chart = pd.DataFrame(top_trends, columns=['Keyword', 'Count'])
             
@@ -214,7 +214,7 @@ if "news_data" in st.session_state and st.session_state["news_data"]:
         st.divider()
 
         # 3. 頻出単語リスト
-        st.subheader("📋 頻出単語リスト")
+        st.subheader("📋 頻出単語リスト", anchor=False)
         st.caption("除外設定や監視ワード候補の検討にご利用ください。")
         
         if counter:
@@ -228,7 +228,7 @@ if "news_data" in st.session_state and st.session_state["news_data"]:
 
     # --- 右カラム: 重要ニュース選定 ---
     with col_list:
-        st.subheader("🚨 選別されたニュース")
+        st.subheader("🚨 選別されたニュース", anchor=False)
 
         all_filter_options = sorted(list(set(user_watch_keywords + top_10_keywords)))
 
@@ -270,12 +270,20 @@ if "news_data" in st.session_state and st.session_state["news_data"]:
 
     # --- Slack送信エリア ---
     st.markdown("---")
-    if st.button(f"📢 分析レポートをSlackへ (新着7件送信 / 全{len(filtered_news)}件)"):
-        if send_daily_report(trend_text, filtered_news):
-            st.toast("送信完了！", icon="🚀")
-            st.balloons()
-        else:
-            st.error("Slack Webhook URLが設定されていません。")
+    if webhook_url:
+        if st.button(f"📢 分析レポートをSlackへ (新着7件送信 / 全{len(filtered_news)}件)"):
+            if send_daily_report(trend_text, filtered_news):
+                st.toast("送信完了！", icon="🚀")
+                st.balloons()
+            else:
+                st.error("送信に失敗しました")
+    else:
+        st.button(
+            f"📢 分析レポートをSlackへ (Top7 / 全{len(filtered_news)}件)",
+            disabled=True,
+            help="⚠️ セキュリティ保護のため、公開デモ環境ではSlack通知機能を無効化しています。ローカル環境でWebhook URLを設定すると動作します。"
+        )
+        st.info("🔒 公開デモ環境のため、通知機能は無効になっています。")
 
 else:
     st.info("サイドバーの「自動分析を開始」ボタンを押してください。")
