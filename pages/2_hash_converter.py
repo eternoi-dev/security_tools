@@ -1,7 +1,7 @@
 import streamlit as st
 import hashlib
 
-st.title("🛡️ Integrity Checker (完全性確認)", anchor=False)
+st.title("#️⃣ Integrity Checker (完全性確認)", anchor=False)
 st.markdown("データのハッシュ値を計算し、改ざんや破損がないかを確認します。")
 
 tab1, tab2 = st.tabs(["テキストから計算", "ファイルから計算"])
